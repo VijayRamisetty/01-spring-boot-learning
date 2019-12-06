@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+<context:property-placeholder location="classpath:myprops/sports.properties"/> 	<!-- load properties -->
+
+
+<context:component-scan base-package="com.vj.di"></context:component-scan>  	<!-- enable Annotation based component scanning -->
+
+
+ <!-- IOC 1-->
+   
+   <bean id="myCoachB" class="com.vj.ioc1.BaseBallCoach" ></bean>
+   <bean id="myCoachC" class="com.vj.ioc1.CricketCoach" ></bean>
+
+<!-- DI -->
+
+<bean id="myForturne" class = "com.vj.di.HappyFortuneService"></bean>
+
+	
+<bean id="myCoachB.DI" class="com.vj.di.BaseBallCoach" >
+		<constructor-arg ref='myForturne' /> 	 <!-- Constructor DI -->
+</bean>
+
+
+<bean id="myCoachC.DI" class="com.vj.di.CricketCoach" >
+
+		<property name='fortuneService'  ref='myForturne'/>               <!-- Setter DI -->
+		
+		<property name='team'            value='chennaiSuperkings'/>      <!-- String literals -->
+		<property name='emailAddress'    value='${foo.emailAddress}'/>    <!-- from properties file  -->
+		
+</bean>
+
+<!-- IOC 1 : BeanScopes -->
+   
+   <bean id="myCoachB.BS" class="com.vj.di.BaseBallCoach" scope="singleton"></bean>   <!-- no scope means singleton default -->
+   <bean id="myCoachC.BS" class="com.vj.di.CricketCoach" scope="prototype"></bean>
+   
+<!-- init example & destroy example -->
+
+<bean id="myCoachT.BeanLifeCycle" class="com.vj.di.TrackCoach" init-method="doMyStartupStuff" destroy-method="doMyCleanupStuff"></bean>
+
+</beans> 
