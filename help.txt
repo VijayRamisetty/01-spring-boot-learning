@@ -1,4 +1,5 @@
 spring examples
-
-- DI
+---------------
+- DI 
 - IOC
+- Reading from .properties file
